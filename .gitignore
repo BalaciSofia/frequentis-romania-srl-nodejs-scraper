@@ -41,8 +41,6 @@ jobs_existing.json
 jobs_valid.json
 company_data.json
 delete.json
-frequentis_response.json
-
 # Credentials (NEVER commit these)
 *.pem
 *.key

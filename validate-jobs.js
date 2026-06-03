@@ -19,8 +19,9 @@ async function checkJobUrl(url) {
       timeout: TIMEOUT,
       headers: {
         "User-Agent": "job_seeker_ro_spider",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,application/json,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.5",
+        "Accept-Encoding": "gzip, deflate, br",
         "Connection": "keep-alive",
         "Upgrade-Insecure-Requests": "1"
       },
@@ -70,7 +71,7 @@ async function checkUrls(urls) {
       results.error.push(result);
     }
 
-    const icon = result.status === "active" ? "?" : result.status === "expired" ? "?" : "??";
+    const icon = result.status === "active" ? "[OK]" : result.status === "expired" ? "[X]" : "[!]";
     console.log(`${icon} [${i+1}/${urls.length}] ${result.status} (HTTP ${result.httpStatus}) - ${url}`);
     if (result.title) {
       console.log(`   Title: ${result.title.substring(0, 60)}...`);
@@ -82,9 +83,9 @@ async function checkUrls(urls) {
 
   console.log(`\n=== SUMMARY ===`);
   console.log(`Total: ${urls.length}`);
-  console.log(`Active: ${results.active.length} ?`);
-  console.log(`Expired: ${results.expired.length} ?`);
-  console.log(`Error: ${results.error.length} ??`);
+  console.log(`Active: ${results.active.length}`);
+  console.log(`Expired: ${results.expired.length}`);
+  console.log(`Error: ${results.error.length}`);
 
   return results;
 }
@@ -167,7 +168,7 @@ Usage:
 
 Examples:
   node validate-jobs.js 25475641                 - Validate FREQUENTIS jobs
-  node validate-jobs.js --url "https://jobs.frequentis.com/careers/JobDetail/ROU-Java-Developer/3425"
+  node validate-jobs.js --url "https://jobs.frequentis.com/careers/JobDetail/123"
   node validate-jobs.js --urls "url1" "url2"
   node validate-jobs.js --file jobs.json
 `;

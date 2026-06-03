@@ -30,7 +30,8 @@ Proiectul automatizeaza colectarea zilnica a job-urilor FREQUENTIS din Romania, 
 ??? src/anaf.js        # ANAF API core module (search + company details)
 ??? solr.js            # SOLR operations (query, upsert, delete, company)
 ??? company.json       # Cached company data (fallback when ANAF is down)
-??? test/              # Test suite
+??? validate-jobs.js   # Job URL validator
+??? tests/             # Test suite
 ?   ??? unit/          # Unit tests (mocked APIs)
 ?   ??? integration/   # Integration tests (ANAF + SOLR live)
 ?   ??? e2e/           # E2E tests (full pipeline, real FREQUENTIS site)
@@ -112,7 +113,7 @@ The `test.yml` workflow runs on every push and pull request. It:
 
 ## Robots.txt Policy
 
-Acest scraper respecta regulile din [robots.txt](https://www.frequentis.com/robots.txt) al site-ului FREQUENTIS.
+Acest scraper respecta regulile din [robots.txt](https://www.frequentis.com/robots.txt) al site-ului FREQUENTIS. Pentru analiza completa, vezi [ROBOTS.md](ROBOTS.md).
 
 Puncte cheie:
 - Se acceseaza doar paginile publice de job-uri
