@@ -1,13 +1,10 @@
 import fetch from "node-fetch";
+import { sleep } from "./utils.js";
 
 const ANAF_API_URL = "https://demoanaf.ro/api/company/";
 const ANAF_SEARCH_URL = "https://demoanaf.ro/api/search";
 const MAX_RETRIES = 3;
 const RETRY_DELAY_MS = 2000;
-
-async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 export async function getCompanyFromANAF(cif) {
   let lastError = null;

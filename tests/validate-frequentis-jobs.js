@@ -8,7 +8,7 @@
 import fetch from "node-fetch";
 
 const SOLR_URL = "https://solr.peviitor.ro/solr/job/update";
-const SOLR_AUTH = process.env.SOLR_AUTH || "solr:SolrRocks";
+const SOLR_AUTH = process.env.SOLR_AUTH;
 const COMPANY_NAME = "FREQUENTIS ROMANIA SRL";
 
 async function getJobs() {
@@ -47,7 +47,7 @@ async function checkUrl(url) {
 }
 
 async function deleteJobFromSolr(url) {
-  const AUTH = process.env.SOLR_AUTH || "solr:SolrRocks";
+  const AUTH = process.env.SOLR_AUTH;
   const params = new URLSearchParams({ commit: "true" });
 
   const deleteQuery = JSON.stringify({
@@ -69,6 +69,11 @@ async function deleteJobFromSolr(url) {
 }
 
 async function main(args) {
+  if (!process.env.SOLR_AUTH) {
+    console.error("SOLR_AUTH environment variable is required");
+    process.exit(1);
+  }
+
   const dryRun = args.includes("--dry-run") || !args.includes("--delete");
 
   console.log("=".repeat(50));

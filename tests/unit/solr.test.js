@@ -7,9 +7,11 @@ jest.unstable_mockModule('node-fetch', () => ({
 }));
 
 function makeSolrResponse(numFound, docs) {
+  const body = JSON.stringify({ response: { numFound, docs } });
   return {
     ok: true,
-    json: async () => ({ response: { numFound, docs } })
+    text: async () => body,
+    json: async () => JSON.parse(body)
   };
 }
 
@@ -153,7 +155,7 @@ describe('solr.js', () => {
     it('should throw on HTTP error', async () => {
       mockFetch.mockResolvedValue(makeErrorResponse(500, 'Error'));
 
-      await expect(solr.deleteJobByUrl('https://test.com/bad')).rejects.toThrow('SOLR delete error: 500');
+      await expect(solr.deleteJobByUrl('https://test.com/bad')).rejects.toThrow('SOLR delete url error: 500');
     });
   });
 

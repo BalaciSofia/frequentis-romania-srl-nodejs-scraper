@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { fileURLToPath } from "url";
 import { getCompanyFromANAF, getCompanyFromANAFWithFallback, searchCompany } from "./src/anaf.js";
 
 export { getCompanyFromANAF, getCompanyFromANAFWithFallback, searchCompany };
@@ -36,7 +37,7 @@ async function main() {
   }
 }
 
-if (process.argv[1]?.includes('demoanaf')) {
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   main().catch(err => {
     console.error("Error:", err.message);
     process.exit(1);

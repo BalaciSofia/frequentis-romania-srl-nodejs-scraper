@@ -24,6 +24,6 @@
 | `.gitignore` | Git ignore rules |
 | `.github/workflows/scrape.yml` | Daily scraping workflow |
 | `.github/workflows/test.yml` | Test automation workflow |
-| `test/unit/` | Unit tests |
-| `test/integration/` | Integration tests |
-| `test/e2e/` | End-to-end tests |
+| `tests/unit/` | Unit tests |
+| `tests/integration/` | Integration tests |
+| `tests/e2e/` | End-to-end tests |

@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import fs from "fs";
+import { fileURLToPath } from "url";
 import { querySOLR, deleteJobsByCIF } from "./solr.js";
 import { getCompanyFromANAF, searchCompany, getCompanyFromANAFWithFallback } from "./src/anaf.js";
 
@@ -141,16 +142,17 @@ export async function getCompanyData() {
       c.statusLabel === "Func\u021Biune"
     );
 
+    let selectedCIF;
     if (!exactMatch) {
       console.log("No exact match with 'Func\u021Biune' status, trying first active company...");
       const activeMatch = searchResults.find(c => c.statusLabel === "Func?iune");
       if (!activeMatch) {
         throw new Error(`No active company found for brand: ${COMPANY_BRAND}`);
       }
-      var selectedCIF = activeMatch.cui;
+      selectedCIF = activeMatch.cui;
       console.log(`Selected: ${activeMatch.name} (CIF: ${selectedCIF})`);
     } else {
-      var selectedCIF = exactMatch.cui;
+      selectedCIF = exactMatch.cui;
       console.log(`Found exact match: ${exactMatch.name} (CIF: ${selectedCIF})`);
     }
 
@@ -228,7 +230,7 @@ export async function validateAndGetCompany() {
   return { status: "active", company, cif, existingJobsCount: solrResult.numFound, address, anafData };
 }
 
-if (import.meta.url === `file://${process.argv[1]}` || process.argv[1]?.endsWith("company.js")) {
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   console.log("=== Running company.js independently ===\n");
 
   const { company, cif, active } = await getCompanyData();

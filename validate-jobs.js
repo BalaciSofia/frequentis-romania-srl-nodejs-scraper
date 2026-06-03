@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import fs from "fs";
+import { fileURLToPath } from "url";
 
 const TIMEOUT = 15000;
 
@@ -225,7 +226,7 @@ async function main() {
   process.exit(1);
 }
 
-if (process.argv[1]?.includes('validate-jobs')) {
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   main().catch(err => {
     console.error("Error:", err.message);
     process.exit(1);

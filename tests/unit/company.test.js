@@ -29,6 +29,7 @@ function restoreCompanyJson() {
 function anafSearchResponse(results) {
   return {
     ok: true,
+    text: async () => JSON.stringify({ data: results, success: true }),
     json: async () => ({ data: results, success: true })
   };
 }
@@ -36,6 +37,7 @@ function anafSearchResponse(results) {
 function anafCompanyResponse(data) {
   return {
     ok: true,
+    text: async () => JSON.stringify({ data, success: true }),
     json: async () => ({ data, success: true })
   };
 }
@@ -43,14 +45,17 @@ function anafCompanyResponse(data) {
 function peviitorResponse(companies) {
   return {
     ok: true,
+    text: async () => JSON.stringify({ companies }),
     json: async () => ({ companies })
   };
 }
 
 function solrResponse(numFound, docs) {
+  const body = JSON.stringify({ response: { numFound, docs } });
   return {
     ok: true,
-    json: async () => ({ response: { numFound, docs } })
+    text: async () => body,
+    json: async () => JSON.parse(body)
   };
 }
 

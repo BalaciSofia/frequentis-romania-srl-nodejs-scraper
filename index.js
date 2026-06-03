@@ -4,16 +4,14 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 import { validateAndGetCompany } from "./company.js";
 import { querySOLR, deleteJobByUrl, upsertJobs, upsertCompany } from "./solr.js";
+import { sleep } from "./src/utils.js";
 
 const COMPANY_CIF = "25475641";
 const TIMEOUT = 10000;
 const JOB_SEARCH_URL = "https://jobs.frequentis.com/careers/SearchJobs";
 const JOB_BASE = "https://jobs.frequentis.com";
-const PAGE_SIZE = 20;
 
 let COMPANY_NAME = null;
-
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function fetchJobsPage(pageNum) {
   const url = `${JOB_SEARCH_URL}?page=${pageNum}&sort=date&folder=true`;
@@ -22,7 +20,8 @@ async function fetchJobsPage(pageNum) {
     headers: {
       "User-Agent": "job_seeker_ro_spider",
       "Accept": "text/html,application/xhtml+xml"
-    }
+    },
+    timeout: TIMEOUT
   });
 
   if (!res.ok) {
@@ -111,7 +110,6 @@ async function scrapeAllListings(testOnlyOnePage = false) {
   const allJobs = [];
   const seenUrls = new Set();
   let page = 1;
-  let totalJobs = 0;
   const MAX_PAGES = 10;
 
   while (true) {
@@ -120,13 +118,15 @@ async function scrapeAllListings(testOnlyOnePage = false) {
     const pageJobs = parseJobListing(html);
 
     if (!pageJobs.length) {
+      if (page === 1 && html.includes("SearchJobs")) {
+        console.warn("Warning: HTML contains 'SearchJobs' but no jobs parsed - site structure may have changed");
+      }
       console.log(`No Romanian jobs found on page ${page}, stopping.`);
       break;
     }
 
     if (page === 1) {
-      totalJobs = pageJobs.length;
-      console.log(`Romanian jobs on site: ${totalJobs}`);
+      console.log(`Romanian jobs on page 1: ${pageJobs.length}`);
     }
 
     let newJobs = 0;
@@ -208,12 +208,17 @@ function transformJobsForSOLR(payload) {
 
   const citySet = new Set(romanianCities.map(c => c.toLowerCase()));
 
+  const REMOTE_WORDS = ['remote'];
+  const ONSITE_WORDS = ['office', 'on-site', 'on site'];
+  const HYBRID_WORDS = ['hybrid'];
+
   const normalizeWorkmode = (wm) => {
     if (!wm) return undefined;
     const lower = wm.toLowerCase();
-    if (lower.includes('remote')) return 'remote';
-    if (lower.includes('office') || lower.includes('on-site') || lower.includes('site')) return 'on-site';
-    return 'hybrid';
+    if (REMOTE_WORDS.some(w => lower.includes(w))) return 'remote';
+    if (ONSITE_WORDS.some(w => lower.includes(w))) return 'on-site';
+    if (HYBRID_WORDS.some(w => lower.includes(w))) return 'hybrid';
+    return undefined;
   };
 
   const transformed = {
@@ -237,7 +242,17 @@ function transformJobsForSOLR(payload) {
   return transformed;
 }
 
+function validateEnv() {
+  const required = ["SOLR_AUTH"];
+  const missing = required.filter(v => !process.env[v]);
+  if (missing.length > 0) {
+    console.error(`Missing required environment variables: ${missing.join(", ")}`);
+    process.exit(1);
+  }
+}
+
 async function main() {
+  validateEnv();
   const testOnlyOnePage = process.argv.includes("--test");
 
   try {
