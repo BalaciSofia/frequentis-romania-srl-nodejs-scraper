@@ -70,8 +70,6 @@ async function fetchJobDetails(url) {
     const html = await res.text();
     const $ = cheerio.load(html);
 
-    const title = $('h1').first().text().trim() || $('.job-detail-title').text().trim();
-
     const location = [];
     $('.list__item__text__subtitle span, .job-location, [class*="location"]').each((i, el) => {
       const text = $(el).text().trim();
@@ -99,7 +97,6 @@ async function fetchJobDetails(url) {
     }
 
     return {
-      title: title || null,
       location: location.length > 0 ? location : ["Cluj-Napoca"],
       workmode,
       tags: [...new Set(tags)].slice(0, 20)
