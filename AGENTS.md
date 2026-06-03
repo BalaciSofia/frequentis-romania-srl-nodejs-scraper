@@ -16,7 +16,7 @@ All temporary/scratch files MUST go in `tmp/` inside the project root.
 NEVER use paths outside the project (e.g. `C:\Users\...\AppData\Local\Temp\opencode`).
 
 ### 2. Issues & GitHub
-- Orice modificare de cod trebuie sa aiba un issue in GitHub Issues
+- Orice modificare de cod trebuie sa aiba un issue in GitHub Issues (vezi [ISSUES.md](ISSUES.md))
 - Exceptii: typo-uri, whitespace, documentatie minora
 - Create a GitHub issue before implementing any change
 - Commit messages must reference the issue they close
