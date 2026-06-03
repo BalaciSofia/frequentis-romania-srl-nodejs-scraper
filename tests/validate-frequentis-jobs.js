@@ -25,10 +25,14 @@ async function getJobs() {
         },
       }
     );
+    if (!res.ok) {
+      throw new Error(`Peviitor API error: ${res.status}`);
+    }
     const data = await res.json();
-    if (data.response.docs.length === 0) break;
+    const docs = data?.response?.docs;
+    if (!docs || docs.length === 0) break;
 
-    jobs.push(...data.response.docs);
+    jobs.push(...docs);
     page++;
   }
   return jobs;
