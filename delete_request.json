@@ -1,0 +1,6 @@
+// delete_request.json template
+{
+  "delete": {
+    "query": "cif:25475641"
+  }
+}
