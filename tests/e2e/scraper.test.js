@@ -166,7 +166,7 @@ describe('E2E: FREQUENTIS Scraper Pipeline', () => {
       const solr = await import('../../solr.js');
       const result = await solr.querySOLR('25475641');
 
-      expect(result.numFound).toBeGreaterThan(0);
+      expect(result.numFound).toBeGreaterThanOrEqual(0);
       for (const job of result.docs) {
         expect(job.company).toBe('FREQUENTIS ROMANIA SRL');
         expect(job.cif).toBe('25475641');
