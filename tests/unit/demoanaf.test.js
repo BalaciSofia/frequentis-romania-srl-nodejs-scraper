@@ -38,7 +38,7 @@ const ANAF_RECORD = {
   reactivatedSince: null,
   registrationNumber: 'J2009000957129',
   vatRegistered: true,
-  onrcStatusLabel: 'Func?iune',
+  onrcStatusLabel: 'Func\u021Biune',
   legalForm: 'SRL'
 };
 
@@ -49,7 +49,7 @@ const CACHED_DATA = {
   registrationNumber: 'J2009000957129',
   caenCode: '6210',
   inactive: false,
-  onrcStatusLabel: 'Func?iune',
+  onrcStatusLabel: 'Func\u021Biune',
   administrators: [{ name: 'TEST ADMIN', role: 'administrator' }],
   authorizedCaenCodes: ['6210']
 };
@@ -68,7 +68,7 @@ describe('src/anaf.js', () => {
   describe('searchCompany', () => {
     it('should return array of companies for valid brand', async () => {
       mockFetch.mockResolvedValue(anafSearchResponse([
-        { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func?iune' }
+        { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func\u021Biune' }
       ]));
 
       const results = await anaf.searchCompany('FREQUENTIS');
@@ -90,12 +90,12 @@ describe('src/anaf.js', () => {
 
     it('should include statusLabel in results', async () => {
       mockFetch.mockResolvedValue(anafSearchResponse([
-        { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func?iune' }
+        { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func\u021Biune' }
       ]));
 
       const results = await anaf.searchCompany('FREQUENTIS');
 
-      expect(results[0]).toHaveProperty('statusLabel', 'Func?iune');
+      expect(results[0]).toHaveProperty('statusLabel', 'Func\u021Biune');
     });
 
     it('should throw on HTTP error', async () => {

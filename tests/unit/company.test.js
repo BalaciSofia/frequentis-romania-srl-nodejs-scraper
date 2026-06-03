@@ -73,7 +73,7 @@ const FREQ_ANAF_RECORD = {
   registrationNumber: 'J2009000957129',
   vatRegistered: true,
   eFacturaRegistered: false,
-  onrcStatusLabel: 'Func?iune',
+  onrcStatusLabel: 'Func\u021Biune',
   legalForm: 'SRL',
   headquartersAddress: { locality: 'Cluj-Napoca' },
   administrators: [{ name: 'TEST ADMIN', role: 'administrator' }],
@@ -114,7 +114,7 @@ describe('company.js', () => {
     it('should find FREQUENTIS via ANAF search and return company data', async () => {
       mockFetch
         .mockResolvedValueOnce(anafSearchResponse([
-          { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func?iune' }
+          { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func\u021Biune' }
         ]))
         .mockResolvedValueOnce(anafCompanyResponse(FREQ_ANAF_RECORD));
 
@@ -131,7 +131,7 @@ describe('company.js', () => {
       mockFetch
         .mockResolvedValueOnce(anafSearchResponse([
           { cui: 11111111, name: 'SOME OTHER COMPANY SRL', statusLabel: 'Radiata' },
-          { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func?iune' }
+          { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func\u021Biune' }
         ]))
         .mockResolvedValueOnce(anafCompanyResponse(FREQ_ANAF_RECORD));
 
@@ -158,7 +158,7 @@ describe('company.js', () => {
     it('should throw when ANAF returns no data', async () => {
       mockFetch
         .mockResolvedValueOnce(anafSearchResponse([
-          { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func?iune' }
+          { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func\u021Biune' }
         ]))
         .mockResolvedValueOnce(anafCompanyResponse(null));
 
@@ -168,7 +168,7 @@ describe('company.js', () => {
     it('should throw when ANAF returns no company name', async () => {
       mockFetch
         .mockResolvedValueOnce(anafSearchResponse([
-          { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func?iune' }
+          { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func\u021Biune' }
         ]))
         .mockResolvedValueOnce(anafCompanyResponse({ cui: 25475641, name: null }));
 
@@ -204,7 +204,7 @@ describe('company.js', () => {
     it('should return company data with status active', async () => {
       mockFetch
         .mockResolvedValueOnce(anafSearchResponse([
-          { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func?iune' }
+          { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func\u021Biune' }
         ]))
         .mockResolvedValueOnce(anafCompanyResponse(FREQ_ANAF_RECORD))
         .mockResolvedValueOnce(solrResponse(5, [
@@ -227,7 +227,7 @@ describe('company.js', () => {
 
       mockFetch
         .mockResolvedValueOnce(anafSearchResponse([
-          { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func?iune' }
+          { cui: 25475641, name: 'FREQUENTIS ROMANIA SRL', statusLabel: 'Func\u021Biune' }
         ]))
         .mockResolvedValueOnce(anafCompanyResponse(inactiveRecord))
         .mockResolvedValueOnce(solrResponse(0, []));

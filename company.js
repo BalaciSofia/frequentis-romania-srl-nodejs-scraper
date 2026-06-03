@@ -138,11 +138,11 @@ export async function getCompanyData() {
     const exactMatch = searchResults.find(c =>
       (c.name.toUpperCase().startsWith(COMPANY_BRAND.toUpperCase() + " ") ||
        c.name.toUpperCase().includes(" " + COMPANY_BRAND.toUpperCase() + " ")) &&
-      c.statusLabel === "Func?iune"
+      c.statusLabel === "Func\u021Biune"
     );
 
     if (!exactMatch) {
-      console.log("No exact match with 'Func?iune' status, trying first active company...");
+      console.log("No exact match with 'Func\u021Biune' status, trying first active company...");
       const activeMatch = searchResults.find(c => c.statusLabel === "Func?iune");
       if (!activeMatch) {
         throw new Error(`No active company found for brand: ${COMPANY_BRAND}`);

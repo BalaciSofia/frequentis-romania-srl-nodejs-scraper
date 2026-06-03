@@ -39,7 +39,7 @@ describe('Integration: API Workflow', () => {
       expect(results.length).toBeGreaterThan(0);
 
       const freq = results.find(c =>
-        c.name.toUpperCase().includes('FREQUENTIS') && c.statusLabel === 'Func?iune'
+        c.name.toUpperCase().includes('FREQUENTIS') && c.statusLabel === 'Func\u021Biune'
       );
       expect(freq).toBeDefined();
       expect(freq.cui.toString()).toBe(FREQ_CIF);
@@ -62,7 +62,7 @@ describe('Integration: API Workflow', () => {
       expect(data).toHaveProperty('registrationNumber');
       expect(data).toHaveProperty('caenCode');
       expect(data).toHaveProperty('inactive', false);
-      expect(data).toHaveProperty('onrcStatusLabel', 'Func?iune');
+      expect(data).toHaveProperty('onrcStatusLabel', 'Func\u021Biune');
     }, 15000);
 
     it('should throw for invalid CIF', async () => {
@@ -211,7 +211,7 @@ describe('Integration: API Workflow', () => {
       expect(searchResults.length).toBeGreaterThan(0);
 
       const freqCompany = searchResults.find(c =>
-        c.name.toUpperCase().includes('FREQUENTIS') && c.statusLabel === 'Func?iune'
+        c.name.toUpperCase().includes('FREQUENTIS') && c.statusLabel === 'Func\u021Biune'
       );
       expect(freqCompany).toBeDefined();
 
